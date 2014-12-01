@@ -1,4 +1,4 @@
-Kaggle team name:  Folk-Dance
+Kaggle team name:  Folk Dance
 Andrew IDs of team: ananavat, shubhits
 
 For classifier one, we ran the pruned C4.5 decision tree classifier from Weka 3.6.11 (Java class weka.classifiers.trees.J48) on the full training dataset, using a pruning confidence of 0.35 and a minimum of 2 instances per leaf (options "-C 0.35 -M 2") and using the default options otherwise. Training took just under 2 minutes and obtained an accuracy of 92.225%. Most of the errors were between similar looking images, such as birds and airplanes, and automobiles, trucks, and horses.   
