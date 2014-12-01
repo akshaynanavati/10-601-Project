@@ -6,7 +6,7 @@ import util.ClassifyInstances;
 public class MS1RF {
     private static final String help =
         "Usage: java MS1Main <data-filename> <train-filename>";
-    private static final String outputFname = "RFResults.csv";
+    private static final String outputFname = "results/RFResults.csv";
 
     public static void main(String[] args) {
         Instances data;
