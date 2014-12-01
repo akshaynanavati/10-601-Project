@@ -1,11 +1,7 @@
-import preprocess.CIELab;
-
-import weka.core.converters.ConverterUtils.DataSource;
 import weka.core.Instances;
-import weka.core.Instance;
-import java.util.Enumeration;
 import weka.classifiers.rules.ConjunctiveRule;
-import java.io.PrintWriter;
+import util.DataIO;
+import util.ClassifyInstances;
 
 public class MS1CR {
     private static final String help =
@@ -18,9 +14,7 @@ public class MS1CR {
         String dataFileName = args[0];
         String testFileName = args[1];
         try {
-            System.out.println("Loading data file... " + dataFileName);
-            data = DataSource.read(dataFileName);
-            System.out.println("Loaded data file... " + dataFileName);
+            data = DataIO.readArff(dataFileName);
         } catch (Exception e) {
             e.printStackTrace(System.out);
             System.out.println("Could not load data file");
@@ -38,48 +32,28 @@ public class MS1CR {
         }
         System.out.println("Trained model...");
         try {
-            System.out.println("Loading testing file... " + testFileName);
-            test = DataSource.read(testFileName);
-            System.out.println("Loaded testing file... " + testFileName);
+            test = DataIO.readArff(testFileName);
         } catch (Exception e) {
             e.printStackTrace(System.out);
             System.out.println("Could not load data file");
             return;
         }
-        int numTestInstances = test.numInstances();
         test.setClassIndex(test.numAttributes() - 1);
-        String[] results = new String[numTestInstances];
+        String[] results;
         System.out.println("Testing model...");
-        for (int i = 0; i < numTestInstances; i++) {
-            Double cl;
-            try {
-                cl = model.classifyInstance(test.instance(i));
-            } catch (Exception e) {
-                e.printStackTrace(System.out);
-                System.out.println("Could not classify instance " + i);
-                return;
-            }
-            Integer clint = cl.intValue();
-            results[i] = clint.toString();
-            if (i % 500 == 0) {
-                System.out.println("Tested " + i + " instances");
-            }
-        }
-        System.out.println("Writing test results...");
-        try (
-            PrintWriter writer = new PrintWriter(outputFname, "UTF-8");
-        ) {
-            writer.println("Id,Category");
-            for (Integer i = 1; i <= numTestInstances; i++) {
-                writer.println(i.toString() + "," + results[i - 1]);
-                if (i % 500 == 0) {
-                    System.out.println("Written " + i + " instances");
-                }
-            }
-            writer.flush();
+        try {
+            results = ClassifyInstances.classify(model, test);
         } catch (Exception e) {
             e.printStackTrace(System.out);
-            System.out.println("Could not open output file");
+            System.out.println("Error testing model");
+            return;
+        }
+        System.out.println("Writing test results...");
+        try {
+            DataIO.writeCSV(outputFname, results);
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+            System.out.println("Error writing data");
             return;
         }
         System.out.println("Classification done!");

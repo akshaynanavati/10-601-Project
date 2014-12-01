@@ -5,6 +5,8 @@ JC = javac
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
+	sources/util/DataIO.java \
+	sources/util/ClassifyInstances.java \
 	sources/MS1RF.java \
 	sources/MS1CR.java \
 	sources/MilestoneOne.java \
