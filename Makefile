@@ -7,8 +7,10 @@ JC = javac
 CLASSES = \
 	sources/util/DataIO.java \
 	sources/util/ClassifyInstances.java \
+	sources/classifier/KNN.java \
 	sources/MS1RF.java \
 	sources/MS1CR.java \
+	sources/RunKNN.java \
 	sources/MilestoneOne.java \
 
 default: classes
