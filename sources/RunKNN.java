@@ -1,5 +1,7 @@
 import weka.core.Instances;
+
 import classifier.KNN;
+import preprocess.CIELab;
 import util.DataIO;
 import util.ClassifyInstances;
 
@@ -13,6 +15,7 @@ public class RunKNN {
         Instances test;
         String dataFileName = args[0];
         String testFileName = args[1];
+        CIELab cielab = CIELab.getInstance();
         try {
             data = DataIO.readArff(dataFileName);
         } catch (Exception e) {
@@ -23,6 +26,7 @@ public class RunKNN {
         KNN model = new KNN(5);
         System.out.println("Training model...");
         data.setClassIndex(data.numAttributes() - 1);
+        data = cielab.transformInstances(data);
         try {
             model.buildClassifier(data);
         } catch (Exception e) {
@@ -39,6 +43,7 @@ public class RunKNN {
             return;
         }
         test.setClassIndex(test.numAttributes() - 1);
+        test = cielab.transformInstances(test);
         String[] results;
         System.out.println("Testing model...");
         try {
