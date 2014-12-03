@@ -5,6 +5,7 @@ JC = javac
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
+	sources/preprocess/CIELab.java \
 	sources/util/DataIO.java \
 	sources/util/ClassifyInstances.java \
 	sources/classifier/KNN.java \

@@ -1,12 +1,75 @@
 package preprocess;
 
 import java.awt.color.ColorSpace;
+import java.util.ArrayList;
+
+import weka.core.Instances;
+import weka.core.Instance;
+import weka.core.Attribute;
 
 /**
- * This code was taken from:
+ * This code was modified from:
  * http://stackoverflow.com/questions/4593469/java-how-to-convert-rgb-color-to-cie-lab
  */
 public class CIELab extends ColorSpace {
+
+    private Instance transformInstance(Instance d) {
+        int numAttr = d.numAttributes();
+        int n = numAttr - 1;
+        if (n % 3 != 0) {
+            System.out.println(
+                "Number of attributes must be divisible by 3 " +
+                "but only " + n + " attributes found"
+            );
+            System.exit(-1);
+        }
+        int m = n / 3;
+        Instance newInst = new Instance(numAttr);
+        for (int i = 0; i < m; i++) {
+            float[] rgb = {
+                (float) d.value(i),
+                (float) d.value(i + m),
+                (float) d.value(i + m * 2)
+            };
+            float[] lab = this.fromRGB(rgb);
+            newInst.setValue(i, (double) lab[0]);
+            newInst.setValue(i + m, (double) lab[1]);
+            newInst.setValue(i + m * 2, (double) lab[2]);
+        }
+        newInst.setValue(numAttr - 1, d.classValue());
+        if (newInst.numAttributes() != d.numAttributes()) {
+            System.out.println(
+                "Number of transformed attributes = " +
+                newInst.numAttributes() + " but original data had " +
+                d.numAttributes() + " attributes"
+            );
+            System.exit(-1);
+        }
+        return newInst;
+    }
+
+    public Instances transformInstances(Instances data) {
+        int n = data.numInstances();
+        System.out.println(
+            "Trasnforming instances with " + n + " instances"
+        );
+        Instances newInsts =
+            new Instances(data, n);
+        for (int i = 0; i < n; i++) {
+            Instance d = data.instance(i);
+            d.setDataset(data);
+            Instance trans = this.transformInstance(d);
+            newInsts.add(trans);
+            if (i % 1000 == 999) {
+                System.out.println("Transformed " + (i + 1) + " instances");
+            }
+        }
+        newInsts.setClassIndex(newInsts.numAttributes() - 1);
+        System.out.println(
+            "Transformed instances resulting in " + newInsts.numInstances()
+        );
+        return newInsts;
+    }
 
     public static CIELab getInstance() {
         return Holder.INSTANCE;
