@@ -1,4 +1,5 @@
 *.csv
+*.mod
 *.swp
 *.swo
 *.class
