@@ -1,6 +1,7 @@
 package classifier;
 
 import util.ClassifyInstances;
+
 import weka.core.neighboursearch.LinearNNSearch;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -18,17 +19,18 @@ public class KNN extends Classifier {
     }
 
     public void buildClassifier(Instances data) throws Exception {
-        /* Train on a random 1/3 of the data */
+        /* Train on a random 1/4 of the data */
         data.randomize(
             data.getRandomNumberGenerator(System.currentTimeMillis()));
-        Instances subset = data.trainCV(4, 0);
-        this.model = new LinearNNSearch(subset);
+        Instances train =
+            new Instances(data, 0, data.numInstances() / 4);
+        this.model = new LinearNNSearch(train);
         System.out.println(
-            "Using " + subset.numInstances() + " instances");
+            "Using " + train.numInstances() + " instances");
     }
 
-    public double classifyInstance(Instance d) throws Exception {
-        Instances knn = model.kNearestNeighbours(d, this.k);
+    public double classifyInstance(Instance test) throws Exception {
+        Instances knn = model.kNearestNeighbours(test, this.k);
         return ClassifyInstances.getMajorityClass(knn);
     }
 
