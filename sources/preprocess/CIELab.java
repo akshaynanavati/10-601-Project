@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import weka.core.Instances;
 import weka.core.Instance;
 import weka.core.Attribute;
+import weka.core.FastVector;
 
 /**
  * This code was modified from:
@@ -46,6 +47,78 @@ public class CIELab extends ColorSpace {
             System.exit(-1);
         }
         return newInst;
+    }
+
+    public Instances
+    removeComponent(Instances data, String component)
+    throws Exception {
+        Instances dataNoL;
+        int n = data.numAttributes() - 1;
+        if (n % 3 != 0) {
+            throw new Exception(
+                "Num attributes should be divisible by 3 but " + n +
+                " is not"
+            );
+        }
+        // Create attributes of the new dataset
+        FastVector attInfo = new FastVector((n / 3) * 2 + 1);
+        for (int i = 0; i < (n / 3) * 2; i++) {
+            attInfo.addElement(new Attribute("var" + i));
+        }
+        FastVector classInfo = new FastVector(10);
+        String[] classStr = {
+            "airplane",
+            "automobile",
+            "bird",
+            "cat",
+            "deer",
+            "dog",
+            "frog",
+            "horse",
+            "ship",
+            "truck"
+        };
+        for (String s : classStr) {
+            classInfo.addElement(s);
+        }
+        attInfo.addElement(new Attribute("class", classInfo));
+
+        // Remove L from original dataset
+        dataNoL = new Instances("NoL", attInfo, data.numInstances());
+        dataNoL.setClassIndex((n / 3) * 2);
+        for (int i = 0; i < data.numInstances(); i++) {
+            Instance noL = removeComponent(
+                data.instance(i), component
+            );
+            dataNoL.add(noL);
+        }
+        return dataNoL;
+    }
+
+    public Instance
+    removeComponent(Instance d, String component)
+    throws Exception {
+        int n = d.numAttributes() - 1;
+        if (n % 3 != 0) {
+            throw new Exception(
+                "RGB data must have mod 3 attributes " +
+                "but has: " + n + " n attributes"
+            );
+        }
+        switch (component.toUpperCase()) {
+            case "L":
+                Instance trans = new Instance((n / 3) * 2 + 1);
+                for (int i = n / 3; i < n + 1; i++) {
+                    trans.setValue(i - n / 3, d.value(i));
+                }
+                return trans;
+            case "A":
+                throw new Exception("Removing A is NYI");
+            case "B":
+                throw new Exception("Removing A is NYI");
+            default:
+                throw new Exception("Invalid component: " + component);
+        }
     }
 
     public Instances transformInstances(Instances data) {
