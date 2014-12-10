@@ -2,7 +2,6 @@ import weka.core.Instances;
 import weka.clusterers.SimpleKMeans;
 
 import classifier.KNN;
-import preprocess.CIELab;
 import util.DataIO;
 import util.ClassifyInstances;
 
@@ -19,8 +18,7 @@ public class RunKNN {
         Instances test;
         String dataFileName = args[0];
         String testFileName = args[1];
-        String outputFname = args[1];
-        CIELab cielab = CIELab.getInstance();
+        String outputFname = args[2];
 
         data = DataIO.readArff(dataFileName);
         KNN model = new KNN(5);
