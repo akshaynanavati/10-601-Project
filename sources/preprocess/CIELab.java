@@ -8,11 +8,24 @@ import weka.core.Instance;
 import weka.core.Attribute;
 import weka.core.FastVector;
 
+import util.DataIO;
+
 /**
  * This code was modified from:
  * http://stackoverflow.com/questions/4593469/java-how-to-convert-rgb-color-to-cie-lab
  */
 public class CIELab extends ColorSpace {
+
+    public static void main(String[] args) throws Exception {
+        String help =
+            "Transform data from RGB to lab space\n" +
+            "Usage: java CIELab <inFile> <outFile>\n";
+        if (args.length != 2) {
+            System.out.println(help);
+            return;
+        }
+        CIELab.doTransform(args[0], args[1]);
+    }
 
     private Instance transformInstance(Instance d) {
         int numAttr = d.numAttributes();
@@ -142,6 +155,15 @@ public class CIELab extends ColorSpace {
             "Transformed instances resulting in " + newInsts.numInstances()
         );
         return newInsts;
+    }
+
+    public static void doTransform(String inFile, String outFile)
+    throws Exception {
+        CIELab cielab = CIELab.getInstance();
+        Instances data = DataIO.readArff(inFile);
+        data.setClassIndex(data.numAttributes() - 1);
+        Instances trans = cielab.transformInstances(data);
+        DataIO.writeArff(outFile, trans);
     }
 
     public static CIELab getInstance() {
