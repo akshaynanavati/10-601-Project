@@ -14,7 +14,7 @@ public class DataIO {
         ) {
             writer.println("Id,Category");
             for (Integer i = 1; i <= results.length; i++) {
-                writer.println(i.toString() + "," + results[i - 1]);
+                writer.println(i.toString() + "," + (results[i - 1]));
                 if (i % 1000 == 0) {
                     System.out.println("Written " + i + " instances");
                 }
