@@ -2,6 +2,8 @@ package util;
 
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.core.Instances;
+import weka.core.converters.ArffSaver;
+
 import java.io.*;
 
 public class DataIO {
@@ -26,5 +28,15 @@ public class DataIO {
         Instances data = DataSource.read(fname);
         System.out.println("Loaded data file... " + fname);
         return data;
+    }
+
+    public static void writeArff(String fname, Instances data)
+    throws Exception {
+        System.out.println("Writing data to " + fname);
+        ArffSaver saver = new ArffSaver();
+        saver.setInstances(data);
+        saver.setFile(new File(fname));
+        saver.writeBatch();
+        System.out.println("Finished writing to " + fname);
     }
 }
