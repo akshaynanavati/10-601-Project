@@ -7,7 +7,7 @@ import util.ClassifyInstances;
 
 public class RunKNN {
     private static final String help =
-        "Usage: java MS1Main <data-filename> <train-filename> <results=filename>";
+        "Usage: java MS1Main <data-filename> <train-filename> <results-filename>";
 
     public static void main(String[] args) throws Exception {
         if (args.length != 3) {
