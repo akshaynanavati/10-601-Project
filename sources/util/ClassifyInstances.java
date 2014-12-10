@@ -15,7 +15,7 @@ public class ClassifyInstances {
         for (int i = 0; i < numInstances; i++) {
             Double cl;
             cl = model.classifyInstance(data.instance(i));
-            Integer clint = cl.intValue();
+            Integer clint = cl.intValue() + 1;
             results[i] = clint.toString();
             if (i % 1000 == 0) {
                 System.out.println("Classified " + i + " instances");
