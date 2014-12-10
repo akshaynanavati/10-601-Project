@@ -32,7 +32,12 @@ public class RunSVM {
         String outputFname = args[2];
 
         data = DataIO.readArff(dataFileName);
-        String[] options = {};
+        String[] options = {
+            "-K", "1",
+            "-D", "16",
+            "-R", "1.0",
+            "-Z"
+        };
         RunSVM svm = new RunSVM(options, data);
 
         test = DataIO.readArff(testFileName);
