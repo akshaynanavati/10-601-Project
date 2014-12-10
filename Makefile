@@ -12,6 +12,7 @@ CLASSES = \
 	sources/MS1RF.java \
 	sources/MS1CR.java \
 	sources/RunKNN.java \
+	sources/RunSVM.java \
 	sources/MilestoneOne.java \
 
 default: classes
