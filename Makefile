@@ -14,6 +14,7 @@ CLASSES = \
 	sources/RunKNN.java \
 	sources/RunSVM.java \
 	sources/MilestoneOne.java \
+	sources/RandomForest.java \
 
 default: classes
 
