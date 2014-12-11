@@ -7,10 +7,10 @@ import util.ClassifyInstances;
 
 public class RunKNN {
     private static final String help =
-        "Usage: java MS1Main <data-filename> <train-filename> <results-filename>";
+        "Usage: java MS1Main <data-filename> <train-filename> <results-filename> <k>";
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
+        if (args.length != 4) {
             System.out.println(RunKNN.help);
             return;
         }
@@ -19,9 +19,10 @@ public class RunKNN {
         String dataFileName = args[0];
         String testFileName = args[1];
         String outputFname = args[2];
+        int k = Integer.parseInt(args[3]);
 
         data = DataIO.readArff(dataFileName);
-        KNN model = new KNN(5);
+        KNN model = new KNN(k);
 
         System.out.println("Training model...");
         int n = data.numAttributes() - 1;

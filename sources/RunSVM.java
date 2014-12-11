@@ -7,7 +7,7 @@ import util.ClassifyInstances;
 public class RunSVM {
     private LibSVM model;
     private static final String help =
-        "Usage: java RunSVM <data-filename> <train-filename> <results-filename>";
+        "Usage: java RunSVM <data-filename> <train-filename> <results-filename> <degree>";
 
     public RunSVM(String[] options, Instances data)
     throws Exception {
@@ -21,7 +21,7 @@ public class RunSVM {
 
     public static void main(String[] args)
     throws Exception {
-        if (args.length != 3) {
+        if (args.length != 4) {
             System.out.println(RunSVM.help);
             return;
         }
@@ -34,7 +34,7 @@ public class RunSVM {
         data = DataIO.readArff(dataFileName);
         String[] options = {
             "-K", "1",
-            "-D", "16",
+            "-D", args[3],
             "-R", "1.0",
             "-Z"
         };
