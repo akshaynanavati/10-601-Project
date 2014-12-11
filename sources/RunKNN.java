@@ -60,7 +60,7 @@ public class RunKNN {
         // modelNoL.buildClassifier(dataNoL);
         System.out.println("Trained model...");
 
-        // test = DataIO.readArff(testFileName);
+        test = DataIO.readArff(testFileName);
         test.setClassIndex(test.numAttributes() - 1);
         // test = cielab.transformInstances(test);
         // testNoL = cielab.removeComponent(test, "L");
